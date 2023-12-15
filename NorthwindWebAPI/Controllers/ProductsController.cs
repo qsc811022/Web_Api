@@ -87,6 +87,12 @@ namespace NorthwindWebAPI.Controllers
 				return NotFound();
 			}
 
+			// 檢查是否存在相關的 Order Details
+			if (_context.OrderDetails.Any(od => od.ProductId == id))
+			{
+				return BadRequest("無法刪除：該產品與一個或多個訂單細節相關聯。");
+			}
+
 			_context.Products.Remove(product);
 			await _context.SaveChangesAsync();
 
