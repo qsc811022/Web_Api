@@ -8,9 +8,13 @@ namespace NorthwindWebAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	//今天我將介紹我們如何使用 ASP.NET Core 建立 RESTful API 來管理北風資料庫（Northwind Database）的產品資料表。這個 API 提供了標準的 CRUD（創建、讀取、更新、刪除）操作，使得前端應用能夠與後端資料庫進行互動。
+	//依賴注入與控制器設置:
 	public class RegionsController : ControllerBase
 	{
 		// 使用 NorthwindContext 來訪問數據庫
+//		首先，我們使用依賴注入來引入 NorthwindContext，這是 Entity Framework Core 的一部分，用於操作資料庫庫。這種方法有助於提高代碼的可測試性和靈活性。
+//獲取所有產品 - GET 請求:
 		private readonly NorthwindContext _context;
 
 		// 構造函數，透過依賴注入獲取 NorthwindContext
