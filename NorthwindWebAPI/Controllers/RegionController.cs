@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 using NorthwindWebAPI.Models;
 
@@ -8,8 +10,8 @@ namespace NorthwindWebAPI.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	//今天我將介紹我們如何使用 ASP.NET Core 建立 RESTful API 來管理北風資料庫（Northwind Database）的產品資料表。這個 API 提供了標準的 CRUD（創建、讀取、更新、刪除）操作，使得前端應用能夠與後端資料庫進行互動。
-	//依賴注入與控制器設置:
+//	大家好，今天我將向您展示如何使用 ASP.NET Core 建立一個 RESTful API，這個 API 專門用於管理北風資料庫（Northwind Database）中的地區信息。這包括了基本的 CRUD（創建、讀取、更新、刪除）操作。
+//依賴注入與控制器設置:
 	public class RegionsController : ControllerBase
 	{
 		// 使用 NorthwindContext 來訪問數據庫
@@ -23,6 +25,9 @@ namespace NorthwindWebAPI.Controllers
 			_context = context;
 		}
 
+
+//		我們的 API 允許用戶通過發送 GET 請求到 /api/regions 獲取所有地區的列表。在我們的方法中，我們非同步地從數據庫中獲取所有地區並返回這些信息。
+//獲取特定地區 - GET 請求:
 		// 處理 GET 請求到 api/regions 的路由，用於獲取所有地區
 		[HttpGet]
 		public async Task<ActionResult<IEnumerable<Region>>> GetRegions()
@@ -31,6 +36,9 @@ namespace NorthwindWebAPI.Controllers
 			return await _context.Regions.ToListAsync();
 		}
 
+//		為了獲取特定地區的詳細信息，我們實現了對 /api/regions/{id}
+//	的 GET 請求。如果找不到相應的地區，我們返回一個 404 NotFound 響應，這符合 RESTful 風格。
+//添加新地區 - POST 請求:
 		// 處理 GET 請求到 api/regions/{id} 的路由，用於獲取特定 ID 的地區
 		[HttpGet("{id}")]
 		public async Task<ActionResult<Region>> GetRegion(int id)
@@ -49,6 +57,8 @@ namespace NorthwindWebAPI.Controllers
 		}
 
 		// 處理 POST 請求到 api/regions 的路由，用於創建新地區
+//		我們的 API 也支持添加新地區。這是通過向 /api/regions 發送 POST 請求實現的。在將新地區保存到數據庫後，我們返回一個指向剛創建的地區的響應，這是遵循 RESTful 最佳實踐的一部分。
+//更新地區 - PUT 請求:
 		[HttpPost]
 		public async Task<ActionResult<Region>> PostRegion(Region region)
 		{
@@ -62,6 +72,8 @@ namespace NorthwindWebAPI.Controllers
 		}
 
 		// 處理 PUT 請求到 api/regions/{id} 的路由，用於更新特定 ID 的地區
+//		我們的 API 也支持添加新地區。這是通過向 /api/regions 發送 POST 請求實現的。在將新地區保存到數據庫後，我們返回一個指向剛創建的地區的響應，這是遵循 RESTful 最佳實踐的一部分。
+//更新地區 - PUT 請求:
 		[HttpPut("{id}")]
 		public async Task<IActionResult> PutRegion(int id, Region region)
 		{
@@ -81,6 +93,9 @@ namespace NorthwindWebAPI.Controllers
 		}
 
 		// 處理 DELETE 請求到 api/regions/{id} 的路由，用於刪除特定 ID 的地區
+//		刪除地區 - DELETE 請求:
+//刪除地區功能是通過 DELETE 請求實現的。在從數據庫中移除地區之前，我們先檢查該地區是否存在。這是一種重要的業務邏輯檢查，確保我們不會無意中刪除不存在的數據。
+//結束語:
 		[HttpDelete("{id}")]
 		public async Task<IActionResult> DeleteRegion(int id)
 		{
